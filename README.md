@@ -15,4 +15,7 @@ CivicParks v0.1.1 is pinned to `civiccore==0.3.0`.
 
 Set `CIVICPARKS_WORKPAPER_DB_URL` to persist registration assistance and maintenance triage records. Without it, CivicParks remains deterministic and stateless.
 
-Apache 2.0 code. CC BY 4.0 docs.
+## License
+
+Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See [LICENSE](LICENSE) and [LICENSE-EXCEPTION.md](LICENSE-EXCEPTION.md).
+Documentation: CC BY 4.0 ([LICENSE-DOCS](LICENSE-DOCS)).
