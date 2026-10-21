@@ -1,4 +1,6 @@
-# CivicParks Implementation Plan
+<a id="civicparks-implementation-plan"></a>
+
+# Townlight Parks Implementation Plan
 
 ## v0.1.0
 
@@ -13,6 +15,6 @@ Ship the runtime foundation only:
 
 - Isolated deployment profile if city policy requires it.
 - Read-only registration-system adapter design.
-- Civic311 handoff adapter design.
+- Townlight 311 handoff adapter design.
 - Staff workflow UI.
-- Optional local LLM prompt layer through CivicCore.
+- Optional local LLM prompt layer through Townlight Core.

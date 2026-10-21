@@ -1,4 +1,6 @@
-# CivicParks Milestones
+<a id="civicparks-milestones"></a>
+
+# Townlight Parks Milestones
 
 ## Milestone 0-7: v0.1.0 Runtime Foundation
 
@@ -14,6 +16,6 @@ Acceptance criteria:
 ## Post-v0.1.0
 
 - Read-only registration-system adapter design.
-- Civic311 handoff adapter design.
+- Townlight 311 handoff adapter design.
 - Staff workflow UI.
 - Local LLM provider integration.

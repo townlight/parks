@@ -1,4 +1,4 @@
-"""HTML landing surface for the CivicParks runtime."""
+"""HTML landing surface for the Townlight Parks runtime."""
 
 
 def render_public_lookup_page() -> str:
@@ -8,7 +8,7 @@ def render_public_lookup_page() -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:,">
-  <title>CivicParks v0.1.1</title>
+  <title>Townlight Parks v0.1.1</title>
   <style>
     :root{--ink:#162415;--muted:#536b51;--line:#c8dfc0;--paper:#f8fff4;--card:#ffffff;--accent:#397046;--sun:#d9972b}
     *{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:radial-gradient(circle at top right,#fff1bf,transparent 32rem),linear-gradient(135deg,#f8fff4,#edf8ff);color:var(--ink)}
@@ -24,9 +24,9 @@ def render_public_lookup_page() -> str:
 <main>
   <section class="hero">
     <div>
-      <p class="eyebrow">CivicSuite / CivicParks</p>
+      <p class="eyebrow">Townlight / Townlight Parks</p>
       <h1>Parks and recreation answers without replacing registration systems.</h1>
-      <p>CivicParks v0.1.1 helps staff answer facility, program, rental, league, and park-rule questions while keeping payments, registration records, and work orders in existing systems.</p>
+      <p>Townlight Parks v0.1.1 helps staff answer facility, program, rental, league, and park-rule questions while keeping payments, registration records, and work orders in existing systems.</p>
     </div>
     <div class="panel">
       <h2>v0.1.1 boundary</h2>
@@ -36,12 +36,12 @@ def render_public_lookup_page() -> str:
   <section class="cards">
     <article class="card"><h2>Facility Rules</h2><p>Cited drafts over park rules, rental terms, fee schedules, and league policies.</p></article>
     <article class="card"><h2>Program Help</h2><p>Plain-English program descriptions with accessibility review and registration links.</p></article>
-    <article class="card"><h2>Civic311 Ready</h2><p>Maintenance triage prepares a staff-reviewed handoff category without creating work orders.</p></article>
+    <article class="card"><h2>Townlight 311 Ready</h2><p>Maintenance triage prepares a staff-reviewed handoff category without creating work orders.</p></article>
   </section>
   <section class="panel">
     <h2>Architecture</h2>
-    <p><strong>Resident or staff question</strong> -> CivicParks deterministic API -> CivicCore foundation. Registration and Civic311 adapters are future read-only or handoff designs, not v0.1.1 write paths.</p>
-    <p>Dependency: <code>civiccore==0.3.0</code>. Repo: <a href="https://github.com/CivicSuite/civicparks">CivicSuite/civicparks</a>.</p>
+    <p><strong>Resident or staff question</strong> -> Townlight Parks deterministic API -> Townlight Core foundation. Registration and Townlight 311 adapters are future read-only or handoff designs, not v0.1.1 write paths.</p>
+    <p>Dependency: <code>civiccore==0.3.0</code>. Repo: <a href="https://github.com/townlight/parks">CivicSuite/civicparks</a>.</p>
   </section>
 </main>
 </body>

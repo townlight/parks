@@ -1,4 +1,4 @@
-"""FastAPI runtime foundation for CivicParks."""
+"""FastAPI runtime foundation for Townlight Parks."""
 
 import os
 
@@ -16,9 +16,9 @@ from civicparks.public_ui import render_public_lookup_page
 from civicparks.registration import RecreationProgram, draft_registration_assistance
 
 app = FastAPI(
-    title="CivicParks",
+    title='Townlight Parks',
     version=__version__,
-    description="Parks and recreation policy, program, registration-link, and maintenance-triage foundation.",
+    description='Parks and recreation policy, program, registration-link, and maintenance-triage foundation.',
 )
 
 _workpaper_repository: ParksWorkpaperRepository | None = None
@@ -65,13 +65,13 @@ def root() -> dict[str, str]:
         "version": __version__,
         "status": "parks and recreation support foundation",
         "message": (
-            "CivicParks policy Q&A, program Q&A, registration-link assistance, "
+            "Townlight Parks policy Q&A, program Q&A, registration-link assistance, "
             "maintenance triage, optional database-backed registration/maintenance workpapers, "
             "and public UI foundation are online; payments, "
             "registrations, participant records, reservation writes, crew dispatch, "
             "live LLM calls, and connector runtime are not implemented yet."
         ),
-        "next_step": "Post-v0.1.1 roadmap: registration-system and Civic311 handoff adapter design",
+        "next_step": "Post-v0.1.1 roadmap: registration-system and Townlight 311 handoff adapter design",
     }
 
 
@@ -111,7 +111,7 @@ def registration_assistance(request: RegistrationAssistanceRequest) -> dict[str,
 @app.get("/api/v1/civicparks/registration-assistance/{assistance_id}")
 def get_registration_assistance(assistance_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
-        raise HTTPException(status_code=503, detail={"message":"CivicParks workpaper persistence is not configured.","fix":"Set CIVICPARKS_WORKPAPER_DB_URL to retrieve persisted registration assistance."})
+        raise HTTPException(status_code=503, detail={"message":"Townlight Parks workpaper persistence is not configured.","fix":"Set CIVICPARKS_WORKPAPER_DB_URL to retrieve persisted registration assistance."})
     stored = _get_workpaper_repository().get_registration(assistance_id)
     if stored is None:
         raise HTTPException(status_code=404, detail={"message":"Registration assistance record not found.","fix":"Use an assistance_id returned by POST /api/v1/civicparks/registration-assistance."})
@@ -129,7 +129,7 @@ def maintenance_triage(request: MaintenanceTriageRequest) -> dict[str, object]:
 @app.get("/api/v1/civicparks/maintenance-triage/{triage_id}")
 def get_maintenance_triage(triage_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
-        raise HTTPException(status_code=503, detail={"message":"CivicParks workpaper persistence is not configured.","fix":"Set CIVICPARKS_WORKPAPER_DB_URL to retrieve persisted maintenance triage records."})
+        raise HTTPException(status_code=503, detail={"message":"Townlight Parks workpaper persistence is not configured.","fix":"Set CIVICPARKS_WORKPAPER_DB_URL to retrieve persisted maintenance triage records."})
     stored = _get_workpaper_repository().get_maintenance(triage_id)
     if stored is None:
         raise HTTPException(status_code=404, detail={"message":"Maintenance triage record not found.","fix":"Use a triage_id returned by POST /api/v1/civicparks/maintenance-triage."})

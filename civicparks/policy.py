@@ -29,7 +29,7 @@ def answer_policy_question(question: str, sources: list[ParksPolicySource]) -> P
         citations=citations,
         staff_review_required=True,
         boundary=(
-            "CivicParks supports policy and program information only. It does not process "
+            "Townlight Parks supports policy and program information only. It does not process "
             "registrations, payments, reservations, participant records, or maintenance dispatch."
         ),
     )

@@ -30,7 +30,7 @@ def draft_registration_assistance(program: RecreationProgram) -> RegistrationAss
         ),
         staff_review_required=True,
         boundary=(
-            "CivicParks links to existing registration systems only. It does not take "
+            "Townlight Parks links to existing registration systems only. It does not take "
             "payments, enroll participants, manage minor participant records, or replace "
             "RecTrac, CivicRec, or another system of record."
         ),
