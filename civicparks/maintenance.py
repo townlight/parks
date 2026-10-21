@@ -1,4 +1,4 @@
-"""Maintenance request triage helpers for Civic311-compatible handoff."""
+"""Maintenance request triage helpers for Townlight 311-compatible handoff."""
 
 from dataclasses import dataclass
 
@@ -29,7 +29,7 @@ def triage_maintenance_request(issue: str, location: str) -> MaintenanceTriage:
         civic311_handoff_ready=True,
         staff_review_required=True,
         boundary=(
-            "Draft triage only. CivicParks does not dispatch crews, create work orders, "
-            "or write into Civic311 in v0.1.1."
+            "Draft triage only. Townlight Parks does not dispatch crews, create work orders, "
+            "or write into Townlight 311 in v0.1.1."
         ),
     )

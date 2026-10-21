@@ -1,6 +1,8 @@
-# CivicParks Agent Notes
+<a id="civicparks-agent-notes"></a>
 
-- CivicParks v0.1.1 is a deterministic runtime foundation, not a production registration or work-order system.
+# Townlight Parks Agent Notes
+
+- Townlight Parks v0.1.1 is a deterministic runtime foundation, not a production registration or work-order system.
 - Keep `civiccore==0.3.0` pinned until a suite compatibility update says otherwise.
-- Do not import CivicCore placeholder packages.
+- Do not import Townlight Core placeholder packages.
 - Do not claim payment processing, participant-record management, registration writes, facility reservation writes, crew dispatch, live LLM calls, or connector runtime ships in v0.1.1.
