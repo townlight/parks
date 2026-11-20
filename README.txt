@@ -1,15 +1,20 @@
+  Parked foundation — outside the released Windows suite. This repository contains exploratory/support code, not a completed Townlight product. It is not installed or supported by Windows 1.8.1.1. Historical examples, package names and dependency pins below describe this foundation and must not be used as current suite installation instructions. Use the released Windows suite, current modules and acceptance limits.
+
 Townlight Parks
 
-Townlight Parks v0.1.1 ships municipal parks and recreation support foundations: cited parks policy Q&A, program and facility Q&A, registration assistance that links to existing systems, optional database-backed registration/maintenance workpapers, maintenance request triage for Townlight 311-style handoff, FastAPI runtime, public sample UI, docs, tests, browser QA, and release gates.
+Townlight Parks v0.1.1 ships the municipal parks and recreation support foundation for Townlight: cited parks policy Q&A, program and facility Q&A, registration assistance that links to existing systems, optional database-backed registration/maintenance workpapers, maintenance request triage for Townlight 311-style handoff, FastAPI runtime, public sample UI, docs, tests, browser QA, and release gates.
 
 It is not a registration system, payment processor, reservation system, participant-record store, work-order system, live LLM runtime, or parks connector.
 
-Install with:
-python -m pip install -e ".[dev]"
-python -m uvicorn civicparks.main:app --host 127.0.0.1 --port 8143
+Install:
+
+    python -m pip install -e ".[dev]"
+    python -m uvicorn civicparks.main:app --host 127.0.0.1 --port 8143
 
 Townlight Parks v0.1.1 is pinned to civiccore==0.3.0.
 
 Set CIVICPARKS_WORKPAPER_DB_URL to persist registration assistance and maintenance triage records. Without it, Townlight Parks remains deterministic and stateless.
 
-License: Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See LICENSE and LICENSE-EXCEPTION.md. Documentation: CC BY 4.0 (LICENSE-DOCS).
+License
+
+Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See LICENSE and LICENSE-EXCEPTION.md. Documentation: CC BY 4.0 (LICENSE-DOCS).
