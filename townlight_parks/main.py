@@ -2,18 +2,22 @@
 
 import os
 
-from civiccore import __version__ as CIVICCORE_VERSION
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
+from townlight_core import __version__ as TOWNLIGHT_CORE_VERSION
 
-from civicparks import __version__
-from civicparks.maintenance import triage_maintenance_request
-from civicparks.policy import ParksPolicySource, answer_policy_question
-from civicparks.persistence import ParksWorkpaperRepository, StoredMaintenanceTriage, StoredRegistrationAssistance
-from civicparks.programs import ParksProgram, answer_program_question
-from civicparks.public_ui import render_public_lookup_page
-from civicparks.registration import RecreationProgram, draft_registration_assistance
+from townlight_parks import __version__
+from townlight_parks.maintenance import triage_maintenance_request
+from townlight_parks.persistence import (
+    ParksWorkpaperRepository,
+    StoredMaintenanceTriage,
+    StoredRegistrationAssistance,
+)
+from townlight_parks.policy import ParksPolicySource, answer_policy_question
+from townlight_parks.programs import ParksProgram, answer_program_question
+from townlight_parks.public_ui import render_public_lookup_page
+from townlight_parks.registration import RecreationProgram, draft_registration_assistance
 
 app = FastAPI(
     title='Townlight Parks',
@@ -61,7 +65,7 @@ class MaintenanceTriageRequest(BaseModel):
 @app.get("/")
 def root() -> dict[str, str]:
     return {
-        "name": "CivicParks",
+        "name": "Townlight Parks",
         "version": __version__,
         "status": "parks and recreation support foundation",
         "message": (
@@ -71,7 +75,7 @@ def root() -> dict[str, str]:
             "registrations, participant records, reservation writes, crew dispatch, "
             "live LLM calls, and connector runtime are not implemented yet."
         ),
-        "next_step": "Post-v0.1.1 roadmap: registration-system and Townlight 311 handoff adapter design",
+        "next_step": "Post-v0.2.0 roadmap: registration-system and Townlight 311 handoff adapter design",
     }
 
 
@@ -79,28 +83,28 @@ def root() -> dict[str, str]:
 def health() -> dict[str, str]:
     return {
         "status": "ok",
-        "service": "civicparks",
+        "service": "townlight_parks",
         "version": __version__,
-        "civiccore_version": CIVICCORE_VERSION,
+        "townlight_core_version": TOWNLIGHT_CORE_VERSION,
     }
 
 
-@app.get("/civicparks", response_class=HTMLResponse)
+@app.get("/townlight_parks", response_class=HTMLResponse)
 def public_page() -> str:
     return render_public_lookup_page()
 
 
-@app.post("/api/v1/civicparks/policy-answer")
+@app.post("/api/v1/townlight_parks/policy-answer")
 def policy_answer(request: PolicyQuestionRequest) -> dict[str, object]:
     return answer_policy_question(request.question, POLICY_SOURCES).__dict__
 
 
-@app.post("/api/v1/civicparks/program-answer")
+@app.post("/api/v1/townlight_parks/program-answer")
 def program_answer(request: ProgramQuestionRequest) -> dict[str, object]:
     return answer_program_question(request.question, request.programs).__dict__
 
 
-@app.post("/api/v1/civicparks/registration-assistance")
+@app.post("/api/v1/townlight_parks/registration-assistance")
 def registration_assistance(request: RegistrationAssistanceRequest) -> dict[str, object]:
     if _workpaper_database_url() is not None:
         return _stored_registration_response(_get_workpaper_repository().create_registration(program=request.program))
@@ -108,17 +112,17 @@ def registration_assistance(request: RegistrationAssistanceRequest) -> dict[str,
     payload["assistance_id"] = None
     return payload
 
-@app.get("/api/v1/civicparks/registration-assistance/{assistance_id}")
+@app.get("/api/v1/townlight_parks/registration-assistance/{assistance_id}")
 def get_registration_assistance(assistance_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
-        raise HTTPException(status_code=503, detail={"message":"Townlight Parks workpaper persistence is not configured.","fix":"Set CIVICPARKS_WORKPAPER_DB_URL to retrieve persisted registration assistance."})
+        raise HTTPException(status_code=503, detail={"message":"Townlight Parks workpaper persistence is not configured.","fix":"Set TOWNLIGHT_PARKS_WORKPAPER_DB_URL to retrieve persisted registration assistance."})
     stored = _get_workpaper_repository().get_registration(assistance_id)
     if stored is None:
-        raise HTTPException(status_code=404, detail={"message":"Registration assistance record not found.","fix":"Use an assistance_id returned by POST /api/v1/civicparks/registration-assistance."})
+        raise HTTPException(status_code=404, detail={"message":"Registration assistance record not found.","fix":"Use an assistance_id returned by POST /api/v1/townlight_parks/registration-assistance."})
     return _stored_registration_response(stored)
 
 
-@app.post("/api/v1/civicparks/maintenance-triage")
+@app.post("/api/v1/townlight_parks/maintenance-triage")
 def maintenance_triage(request: MaintenanceTriageRequest) -> dict[str, object]:
     if _workpaper_database_url() is not None:
         return _stored_maintenance_response(_get_workpaper_repository().create_maintenance(issue=request.issue, location=request.location))
@@ -126,23 +130,23 @@ def maintenance_triage(request: MaintenanceTriageRequest) -> dict[str, object]:
     payload["triage_id"] = None
     return payload
 
-@app.get("/api/v1/civicparks/maintenance-triage/{triage_id}")
+@app.get("/api/v1/townlight_parks/maintenance-triage/{triage_id}")
 def get_maintenance_triage(triage_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
-        raise HTTPException(status_code=503, detail={"message":"Townlight Parks workpaper persistence is not configured.","fix":"Set CIVICPARKS_WORKPAPER_DB_URL to retrieve persisted maintenance triage records."})
+        raise HTTPException(status_code=503, detail={"message":"Townlight Parks workpaper persistence is not configured.","fix":"Set TOWNLIGHT_PARKS_WORKPAPER_DB_URL to retrieve persisted maintenance triage records."})
     stored = _get_workpaper_repository().get_maintenance(triage_id)
     if stored is None:
-        raise HTTPException(status_code=404, detail={"message":"Maintenance triage record not found.","fix":"Use a triage_id returned by POST /api/v1/civicparks/maintenance-triage."})
+        raise HTTPException(status_code=404, detail={"message":"Maintenance triage record not found.","fix":"Use a triage_id returned by POST /api/v1/townlight_parks/maintenance-triage."})
     return _stored_maintenance_response(stored)
 
 def _workpaper_database_url() -> str | None:
-    return os.environ.get("CIVICPARKS_WORKPAPER_DB_URL")
+    return os.environ.get("TOWNLIGHT_PARKS_WORKPAPER_DB_URL")
 
 def _get_workpaper_repository() -> ParksWorkpaperRepository:
     global _workpaper_db_url, _workpaper_repository
     db_url = _workpaper_database_url()
     if db_url is None:
-        raise RuntimeError("CIVICPARKS_WORKPAPER_DB_URL is not configured.")
+        raise RuntimeError("TOWNLIGHT_PARKS_WORKPAPER_DB_URL is not configured.")
     if _workpaper_repository is None or db_url != _workpaper_db_url:
         _dispose_workpaper_repository()
         _workpaper_db_url = db_url

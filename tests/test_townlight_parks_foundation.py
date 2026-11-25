@@ -1,12 +1,12 @@
-from civicparks import __version__
-from civicparks.maintenance import triage_maintenance_request
-from civicparks.policy import ParksPolicySource, answer_policy_question
-from civicparks.programs import ParksProgram, answer_program_question
-from civicparks.registration import RecreationProgram, draft_registration_assistance
+from townlight_parks import __version__
+from townlight_parks.maintenance import triage_maintenance_request
+from townlight_parks.policy import ParksPolicySource, answer_policy_question
+from townlight_parks.programs import ParksProgram, answer_program_question
+from townlight_parks.registration import RecreationProgram, draft_registration_assistance
 
 
 def test_version_is_release_version():
-    assert __version__ == "0.1.1"
+    assert __version__ == "0.2.0"
 
 
 def test_policy_answer_is_cited_and_reviewed():
@@ -41,5 +41,5 @@ def test_registration_assistance_links_out_without_enrolling():
 def test_maintenance_triage_is_civic311_ready_without_dispatch():
     triage = triage_maintenance_request("Broken playground swing", "Oak Park")
     assert triage.suggested_category == "playground-equipment"
-    assert triage.civic311_handoff_ready is True
+    assert triage.service_request_handoff_ready is True
     assert "does not dispatch crews" in triage.boundary

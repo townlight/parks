@@ -7,13 +7,12 @@ from uuid import uuid4
 import sqlalchemy as sa
 from sqlalchemy import Engine, create_engine
 
-from civicparks.maintenance import triage_maintenance_request
-from civicparks.registration import RecreationProgram, draft_registration_assistance
-
+from townlight_parks.maintenance import triage_maintenance_request
+from townlight_parks.registration import RecreationProgram, draft_registration_assistance
 
 metadata = sa.MetaData()
-registration_records = sa.Table("registration_records", metadata, sa.Column("assistance_id", sa.String(36), primary_key=True), sa.Column("program_title", sa.String(255), nullable=False), sa.Column("registration_url", sa.Text(), nullable=False), sa.Column("assistance_text", sa.Text(), nullable=False), sa.Column("staff_review_required", sa.Boolean(), nullable=False), sa.Column("boundary", sa.Text(), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), nullable=False), schema="civicparks")
-maintenance_records = sa.Table("maintenance_records", metadata, sa.Column("triage_id", sa.String(36), primary_key=True), sa.Column("issue", sa.Text(), nullable=False), sa.Column("suggested_category", sa.String(160), nullable=False), sa.Column("civic311_handoff_ready", sa.Boolean(), nullable=False), sa.Column("staff_review_required", sa.Boolean(), nullable=False), sa.Column("boundary", sa.Text(), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), nullable=False), schema="civicparks")
+registration_records = sa.Table("registration_records", metadata, sa.Column("assistance_id", sa.String(36), primary_key=True), sa.Column("program_title", sa.String(255), nullable=False), sa.Column("registration_url", sa.Text(), nullable=False), sa.Column("assistance_text", sa.Text(), nullable=False), sa.Column("staff_review_required", sa.Boolean(), nullable=False), sa.Column("boundary", sa.Text(), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), nullable=False), schema="townlight_parks")
+maintenance_records = sa.Table("maintenance_records", metadata, sa.Column("triage_id", sa.String(36), primary_key=True), sa.Column("issue", sa.Text(), nullable=False), sa.Column("suggested_category", sa.String(160), nullable=False), sa.Column("service_request_handoff_ready", sa.Boolean(), nullable=False), sa.Column("staff_review_required", sa.Boolean(), nullable=False), sa.Column("boundary", sa.Text(), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), nullable=False), schema="townlight_parks")
 
 
 @dataclass(frozen=True)
@@ -32,7 +31,7 @@ class StoredMaintenanceTriage:
     triage_id: str
     issue: str
     suggested_category: str
-    civic311_handoff_ready: bool
+    service_request_handoff_ready: bool
     staff_review_required: bool
     boundary: str
     created_at: datetime
@@ -42,11 +41,11 @@ class ParksWorkpaperRepository:
     def __init__(self, *, db_url: str | None = None, engine: Engine | None = None) -> None:
         base_engine = engine or create_engine(db_url or "sqlite+pysqlite:///:memory:", future=True)
         if base_engine.dialect.name == "sqlite":
-            self.engine = base_engine.execution_options(schema_translate_map={"civicparks": None})
+            self.engine = base_engine.execution_options(schema_translate_map={"townlight_parks": None})
         else:
             self.engine = base_engine
             with self.engine.begin() as connection:
-                connection.execute(sa.text("CREATE SCHEMA IF NOT EXISTS civicparks"))
+                connection.execute(sa.text("CREATE SCHEMA IF NOT EXISTS townlight_parks"))
         metadata.create_all(self.engine)
 
     def create_registration(self, *, program: RecreationProgram) -> StoredRegistrationAssistance:
@@ -63,7 +62,7 @@ class ParksWorkpaperRepository:
 
     def create_maintenance(self, *, issue: str, location: str) -> StoredMaintenanceTriage:
         draft = triage_maintenance_request(issue, location)
-        stored = StoredMaintenanceTriage(str(uuid4()), draft.issue, draft.suggested_category, draft.civic311_handoff_ready, draft.staff_review_required, draft.boundary, datetime.now(UTC))
+        stored = StoredMaintenanceTriage(str(uuid4()), draft.issue, draft.suggested_category, draft.service_request_handoff_ready, draft.staff_review_required, draft.boundary, datetime.now(UTC))
         with self.engine.begin() as connection:
             connection.execute(maintenance_records.insert().values(**stored.__dict__))
         return stored

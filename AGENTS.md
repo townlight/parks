@@ -2,7 +2,8 @@
 
 # Townlight Parks Agent Notes
 
-- Townlight Parks v0.1.1 is a deterministic runtime foundation, not a production registration or work-order system.
-- Keep `civiccore==0.3.0` pinned until a suite compatibility update says otherwise.
-- Do not import Townlight Core placeholder packages.
-- Do not claim payment processing, participant-record management, registration writes, facility reservation writes, crew dispatch, live LLM calls, or connector runtime ships in v0.1.1.
+- Scope and existing roles are defined by the owner-approved `PARKS-DESIGN.md` complete bounded candidate; v0.2.0 is a real Windows parks candidate, not released.
+- Preserve the Townlight Core dependency direction and required CI; do not add extra gates or readiness claims.
+- Keep staff data inside its private boundary; do not add AI or legal claims.
+- Use actual transaction and payment-provider verification only; no registration-link or payment-mandate runtime is claimed.
+- Windows only. DeepSeek1017 handles low-level implementation; Codex audits. Hold software tag and publish.

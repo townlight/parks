@@ -16,7 +16,7 @@ PLACEHOLDERS = {
     "search",
     "verification",
 }
-SOURCE_ROOT = Path("civicparks")
+SOURCE_ROOT = Path("townlight_parks")
 
 
 def main() -> int:
@@ -29,14 +29,14 @@ def main() -> int:
                 module = node.module
             elif isinstance(node, ast.Import):
                 for alias in node.names:
-                    if alias.name.startswith("civiccore."):
+                    if alias.name.startswith("townlight_core."):
                         module = alias.name
                         break
-            if module and module.startswith("civiccore."):
+            if module and module.startswith("townlight_core."):
                 name = module.split(".")[1]
                 if name in PLACEHOLDERS:
                     failures.append(
-                        f"{path}: civiccore.{name} is a placeholder package in v0.3.0. "
+                        f"{path}: townlight_core.{name} is a placeholder package in v1.3.0.dev2. "
                         "Do not import from it."
                     )
     if failures:
