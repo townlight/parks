@@ -36,11 +36,13 @@ This manual does not promise PyPI availability, a scheduled release date, or sig
 
 Existing Suite roles remain in force:
 
-- `local-admin` — configures the local instance, staff accounts, and permitted integrations.
-- `city-staff` — operates day-to-day Parks workflows (facilities, programs, sessions, bookings, payments, maintenance links, notifications review).
-- `clerk` — records and reconciles offline payments and refunds and manages receipts within the scope assigned by `local-admin`.
+- `local-admin` — configures the local instance, staff accounts, and permitted integrations; has all active profile module capabilities, including Records and Aggregate Data approval.
+- `city-staff` — operates day-to-day Parks workflows (facilities, programs, sessions, bookings, payments, maintenance links, notifications review); has all active profile module capabilities, including Records.
+- `clerk` — records and reconciles offline payments and refunds and manages receipts within the scope assigned by `local-admin`; has Meetings, Notice, Access, 311, Communications and Parks workflow access, but not Records, Code or Data.
+- `records-staff` — has Records access only.
+- `code-staff` — has Code access only.
 
-Records archive access is controlled by a **separate Records permission** and is not implied by staff roles. Aggregate Data export requires explicit **approval** as described in §12. Public pages expose catalogue and availability only, and never household, participant, minor, accommodation, contact or private tracking details.
+Records archive access is controlled by the Records capability: `local-admin` and `city-staff` have it, while `clerk` does not; `records-staff` has Records access only. Records producer archive handoff requires both the relevant module workflow access and Records access, so use `city-staff` or `local-admin` for that. Records retrieval can also be performed by `records-staff`. Aggregate Data export requires explicit **approval** by `local-admin` as described in §12. Public pages expose catalogue and availability only, and never household, participant, minor, accommodation, contact or private tracking details.
 
 A standalone `main.py` is retained as a foundation/demo entry point. It is not the full Suite authentication path, not a normal installer, and not the ordinary city-staff deployment route. Ordinary city staff should use the upcoming Suite candidate.
 
@@ -53,7 +55,7 @@ The following describes the source-level architecture. It does not assert a depl
 ```mermaid
 flowchart LR
   Resident[Resident portal] -->|CSRF + session proof| Portal[Portal command handler]
-  Staff[TS staff surface] -->|Authenticated role| Host[Shared host roles: local-admin / city-staff / clerk]
+  Staff[TS staff surface] -->|Authenticated role| Host[Shared host roles: local-admin / city-staff / clerk / records-staff / code-staff]
   Host --> Inbox[Command inbox]
   Portal --> Inbox
   Inbox --> Runtime[Python runtime - townlight_parks]
@@ -196,7 +198,7 @@ Staff can view the progress and resolution state of a linked 311 request within 
 
 Attachments are private. The Records archive is a private ZIP archive/readback path and is controlled by the separate Records permission. For archive review, the operator should rely on the **exact content hash** produced by the review step: the hash identifies the archived content that was reviewed, rather than a filename or a description of contents.
 
-Records archive access is permission-controlled and is not implied by `city-staff` or `clerk`. When in doubt, verify the exact content hash and the permission check rather than relying on a filename.
+Records archive access is controlled by the Records capability: `local-admin` and `city-staff` have it, `clerk` does not, and `records-staff` has Records access only. Records producer archive handoff requires both the relevant module workflow access and Records access, so use `city-staff` or `local-admin` for that; Records retrieval can also be performed by `records-staff`. When in doubt, verify the exact content hash and the access check rather than relying on a filename.
 
 Public pages never expose attachments, archive contents, archive hashes, household or participant data, accommodation notes, or private tracking identifiers.
 
@@ -206,7 +208,7 @@ Aggregate Data exports are restricted to the approved aggregate scope described 
 
 ## 12. Admin aggregate data approval
 
-Aggregate Data export requires explicit approval. Approval is a discrete action that records who approved the export and what aggregate scope was approved. The export is restricted to that scope and excludes participant, contact and accommodation details. Approval is not implied by any staff role; it is a separate gate.
+Aggregate Data export requires explicit approval by `local-admin`. Approval is a discrete action that records who approved the export and what aggregate scope was approved. The export is restricted to that scope and excludes participant, contact and accommodation details. Approval is available to `local-admin` and is not available to `clerk`, `records-staff` or `code-staff`; it is a separate gate.
 
 ---
 
@@ -222,7 +224,7 @@ Retries at the delivery layer are the responsibility of the delivery worker and 
 
 ### 14.1 Stack and host roles
 
-The Suite combines TypeScript staff surfaces with a Python runtime, resident portal and encrypted command handling. Parks reuses the shared command/session proof and allocation-receipt approach used by 311 and Communications. Host roles are `local-admin`, `city-staff` and `clerk`, with a separate Records archive permission. Target platform is Windows with Python `>=3.11`.
+The Suite combines TypeScript staff surfaces with a Python runtime, resident portal and encrypted command handling. Parks reuses the shared command/session proof and allocation-receipt approach used by 311 and Communications. Host roles are `local-admin`, `city-staff`, `clerk`, `records-staff` and `code-staff`. `local-admin` and `city-staff` have all active profile module capabilities; `clerk` has Meetings, Notice, Access, 311, Communications and Parks workflow access but not Records, Code or Data; `records-staff` has Records only; `code-staff` has Code only. Target platform is Windows with Python `>=3.11`.
 
 ### 14.2 Migrations
 
