@@ -7,6 +7,7 @@ never invents a local closure/resolved status.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy import select
@@ -22,9 +23,47 @@ from .store import (
     utcnow,
 )
 
-__all__ = ["MaintenanceMixin"]
+__all__ = ["MaintenanceMixin", "MaintenanceTriage", "triage_maintenance_request"]
 
 _EVENT_KIND = "integration_link.created"
+
+
+@dataclass(frozen=True)
+class MaintenanceTriage:
+    """Draft maintenance triage advisory returned to callers."""
+
+    issue: str
+    suggested_category: str
+    service_request_handoff_ready: bool
+    staff_review_required: bool
+    boundary: str
+
+
+def triage_maintenance_request(issue: str, location: str) -> MaintenanceTriage:
+    """Return a draft maintenance category advisory for staff.
+
+    ``location`` is accepted for caller context; the owning runtime remains
+    responsible for the actual 311 request and any crew dispatch.
+    """
+    normalized = issue.lower()
+    if "light" in normalized or "lamp" in normalized:
+        category = "park-lighting"
+    elif "trash" in normalized or "litter" in normalized:
+        category = "park-cleanup"
+    elif "playground" in normalized or "swing" in normalized:
+        category = "playground-equipment"
+    else:
+        category = "parks-general"
+    return MaintenanceTriage(
+        issue=issue,
+        suggested_category=category,
+        service_request_handoff_ready=True,
+        staff_review_required=True,
+        boundary=(
+            "THIS HELPER is a draft only and does not dispatch crews or create "
+            "an actual 311 request; actual Suite integration uses the real runtime."
+        ),
+    )
 
 
 class MaintenanceMixin:
