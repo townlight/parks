@@ -12,7 +12,7 @@ for pattern in CivicUtility civicutility CivicElections civicelections CivicCour
   fi
 done
 
-for file in CONTRIBUTING.md LICENSE LICENSE-CODE LICENSE-DOCS SECURITY.md SUPPORT.md CODE_OF_CONDUCT.md docs/architecture.md docs/architecture-civicparks.svg docs/github-discussions-seed.md; do
+for file in CONTRIBUTING.md LICENSE LICENSE-CODE LICENSE-DOCS SECURITY.md SUPPORT.md CODE_OF_CONDUCT.md docs/architecture.md docs/architecture-townlight-parks.svg docs/github-discussions-seed.md; do
   test -f "$file" || { echo "VERIFY-DOCS: missing professional artifact $file"; exit 1; }
 done
 

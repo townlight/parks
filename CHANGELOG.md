@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0] - Unreleased
+
+### Added
+
+- Source integration candidate for `townlight-parks` 0.2.0 (`import townlight_parks`) against Townlight Core `1.3.0.dev2`.
+- Completed source capabilities: public catalogue and availability, booking and registration, recurring reservations with buffers and closures, private households and participants, sessions with eligibility/capacity/waitlists/attendance, integer-cent ledger and refunds, real 311 maintenance links, approved Communications snapshots, Records private archive, approved aggregate Data export, and notifications outbox.
+- Optional hosted Stripe Checkout adapter; no Stripe account is configured and no live charge has been verified.
+
+### Changed
+
+- New source package name `townlight-parks`; target Core `townlight-core==1.3.0.dev2`.
+- Documentation links and architecture notes updated for the 0.2.0 source candidate.
+
+No installed build, signed installer, download, or production acceptance is claimed.
+
 ## [0.1.1] - 2026-04-28
 
 ### Added
