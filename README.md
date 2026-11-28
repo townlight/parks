@@ -1,10 +1,10 @@
-# Townlight Parks 0.2.0 — source integration candidate
+# Townlight Parks 0.2.0
 
-**Status:** Source integration candidate. **Not installed, not released, and not a download.** This describes the `townlight-parks` 0.2.0 source tree (`import townlight_parks`) against Townlight Core `1.3.0.dev2`. It does not assert an installed build, signed installer, or production acceptance.
+**Status:** Townlight Parks 0.2.0 ships in the signed [Townlight for Windows 1.10.0.1](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.10.0.1) public beta. This describes the `townlight-parks` 0.2.0 source tree (`import townlight_parks`) against Townlight Core `1.3.0.dev2`.
 
-The existing public Windows release `1.9.3.2` does **not** include Parks. The final signed combined Suite candidate is still pending, so this README makes no new Parks download or installation claim.
+In the [release acceptance record](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.10.0.1/ACCEPTANCE-Windows-1.10.0.1.md): Hosted Windows checks covered resident Parks, reservations, enrollment, payments, refunds, maintenance, Records archiving and recovery. The staff workflow completed eight observed milestones across 311, Communications and Parks. The earlier Windows release `1.9.3.2` does **not** include Parks.
 
-## What this candidate implements
+## What Parks 0.2.0 implements
 
 Parks adds a real parks and recreation workflow to the Townlight Suite source:
 
@@ -13,7 +13,7 @@ Parks adds a real parks and recreation workflow to the Townlight Suite source:
 - Households, participants and minor/accessibility/contact data kept private. Public pages expose catalogue and availability only, never household, participant, minor, accommodation, contact or private tracking details.
 - Programs and sessions with eligibility, capacity, enrollment, waitlists, promotion, private rosters and idempotent attendance check-in.
 - Fees, deposits, refunds and reconciliation in integer cents with explicit currency. Offline payments and refunds are recorded in an append-only ledger with staff actor and reference.
-- Optional hosted Stripe Checkout adapter for online payment. No Stripe account is configured in this candidate, and **no live charge has been verified**. Card data does not enter Townlight. Provider return URLs are not payment proof; the host retrieves and verifies provider transaction, amount, currency and obligation identity before recording a ledger payment.
+- Optional hosted Stripe Checkout adapter for online payment. No Stripe account is configured by default, and **no live charge has been verified**. Card data does not enter Townlight. Provider return URLs are not payment proof; the host retrieves and verifies provider transaction, amount, currency and obligation identity before recording a ledger payment.
 - Maintenance links create real 311 requests with durable idempotency, actual location/photo bytes and returned 311 request identity.
 - Explicitly approved public closures and program descriptions can become Communications source snapshots.
 - Records private ZIP archive/readback and approved aggregate Data export. Records archive access remains permission-controlled; Data exports exclude participant/contact/accommodation details.
@@ -22,14 +22,14 @@ Parks adds a real parks and recreation workflow to the Townlight Suite source:
 
 This is part of the Townlight Suite: TypeScript staff surfaces plus Python runtime, resident portal and encrypted command handling. Existing roles remain `local-admin`, `city-staff` and `clerk`; Records archive permission is separate. Parks reuses the shared command/session proof and allocation-receipt approach used by 311 and Communications.
 
-A standalone `main.py` is retained as a foundation/demo entry point. It is **not** the full Suite authentication path, not a normal installer, and not the ordinary city-staff deployment route. Ordinary city staff should use the upcoming Suite candidate.
+A standalone `main.py` is retained as a foundation/demo entry point. It is **not** the full Suite authentication path, not a normal installer, and not the ordinary city-staff deployment route. Ordinary city staff should use the signed Townlight for Windows 1.10.0.1 installer.
 
 ## Source installation and migrations
 
 - Target: Windows, Python `>=3.11`.
 - Package: `townlight-parks==0.2.0`; import: `townlight_parks`; Core target: `townlight-core==1.3.0.dev2`.
 - For development, install Core from the pinned `townlight/core` git commit `2f6ba9be4a95e3772dc47a3682ac780c5283b626`. The `townlight-core==1.3.0.dev2` package requirement is not a promise of PyPI availability.
-- Database schema: `townlight_parks`. Production bootstrap is `False`; tables are created only through explicit, programmatic migrations (`migrations.upgrade(engine)`, then `migrations.assert_ready(engine)` via the package migrations module). This source candidate does not add a migration CLI.
+- Database schema: `townlight_parks`. Production bootstrap is `False`; tables are created only through explicit, programmatic migrations (`migrations.upgrade(engine)`, then `migrations.assert_ready(engine)` via the package migrations module). Parks 0.2.0 does not add a migration CLI.
 - Configure database credentials and hosted payment secrets outside source control. Do not place secrets or card details in configuration files, logs or the repository.
 
 ## Privacy, concurrency and recovery
